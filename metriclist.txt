@@ -1,0 +1,4 @@
+LOC Halstead
+CLOC
+Number of functions
+Dependency degree (DD)

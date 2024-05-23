@@ -1,0 +1,71 @@
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'antlr'
+}
+
+group 'com.filipszm.codegauge'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // antlr
+    implementation 'org.antlr:antlr4'
+    antlr "org.antlr:antlr4:4.13.1"
+}
+
+generateGrammarSource {
+    arguments += ['-visitor', '-listener']
+    arguments += ['-package', project.group]
+    outputDirectory = file("$buildDir/generated-src/antlr/main/${project.group}")
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = '18'
+    targetCompatibility = '18'
+}
+
+application {
+    mainClass = "${project.group}.Main"
+}
+
+tasks.register('downloadGrammars', DefaultTask) {
+    doLast {
+        def urls = [
+                'https://raw.githubusercontent.com/antlr/grammars-v4/master/java/java20/Java20Lexer.g4',
+                'https://raw.githubusercontent.com/antlr/grammars-v4/master/java/java20/Java20Parser.g4'
+        ]
+        def files = [
+                project.projectDir.toPath().resolve('src/main/antlr/Java20Lexer.g4'),
+                project.projectDir.toPath().resolve('src/main/antlr/Java20Parser.g4')
+        ]
+
+        urls.eachWithIndex { urlStr, idx ->
+            def url = new URL(urlStr)
+            def file = files[idx]
+
+            if (!Files.exists(file.getParent())) {
+                Files.createDirectories(file.getParent())
+            }
+            url.withInputStream { input ->
+                Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING)
+            }
+        }
+    }
+}
+
+tasks.named('generateGrammarSource').configure {
+    dependsOn 'downloadGrammars'
+}
