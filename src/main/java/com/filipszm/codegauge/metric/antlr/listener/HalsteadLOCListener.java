@@ -1,4 +1,4 @@
-package com.filipszm.codegauge.metric.loc;
+package com.filipszm.codegauge.metric.antlr.listener;
 
 import com.filipszm.codegauge.Java20Parser;
 import com.filipszm.codegauge.Java20ParserBaseListener;
