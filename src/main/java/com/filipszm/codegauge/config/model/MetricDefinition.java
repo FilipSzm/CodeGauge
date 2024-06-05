@@ -10,6 +10,11 @@ import lombok.Data;
 
 @Data
 public class MetricDefinition {
+
+    private String name;
+
+    private boolean enabled;
+
     @JsonSerialize(using = MetricTypeSerializer.class)
     @JsonDeserialize(using = MetricTypeDeserializer.class)
     private MetricType type;
