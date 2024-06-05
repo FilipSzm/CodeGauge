@@ -42,8 +42,8 @@ bin/
 .DS_Store
 
 ### antlr ###
-/antlr/
+/src/main/antlr/
+/src/main/gen/
 
 ### Intelij ###
 /.idea/
-/src/main/antlr/
