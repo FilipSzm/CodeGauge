@@ -27,7 +27,7 @@ public class Main {
 
         if (abc || false && true || false && true || false && true || false && true) {
             System.out.println(0 == 1 ? "AAa" : "Bbb");
-            System.out.println("ewer");
+            System.out.println(() -> "ewer");
         }
         System.out.println("trtert").print("456").yes().rfer.noo().ble();
 

@@ -6,9 +6,15 @@ import com.filipszm.codegauge.config.deserializer.MetricConfigurationDeserialize
 import com.filipszm.codegauge.config.deserializer.MetricTypeDeserializer;
 import com.filipszm.codegauge.config.serializer.MetricTypeSerializer;
 import com.filipszm.codegauge.metric.MetricType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MetricDefinition {
 
     private String name;

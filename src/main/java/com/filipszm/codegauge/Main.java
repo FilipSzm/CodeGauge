@@ -14,69 +14,67 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, NoSuchMethodException, InvocationTargetException,
-            InstantiationException, IllegalAccessException {
-
-
-        List<MetricDefinition> metricDefinitions = ConfigurationReader.readMetricDefinitions("config.json");
-
-        var lexer = new Java20Lexer(CharStreams.fromPath(Paths.get(args[0])));
-        var tokens = new CommonTokenStream(lexer);
-        var parser = new Java20Parser(tokens);
-
-        ParseTree tree = parser.compilationUnit();
+    public static void main(String[] args) throws IOException, InvocationTargetException, InstantiationException,
+            IllegalAccessException, NoSuchMethodException {
+        List<Path> filesToAnalyse = new ArrayList<>();
+        Optional<String> configPath = readArgs(args, filesToAnalyse);
+        List<MetricDefinition> metricDefinitions = configPath.isPresent() ?
+                        ConfigurationReader.readMetricDefinitions(configPath.get()) :
+                        ConfigurationReader.readMetricDefinitions();
 
         var mapper = new ObjectMapper();
         ArrayNode rootNode = mapper.createArrayNode();
+        for (Path path : filesToAnalyse) {
+            if (!path.toFile().exists())
+                return;
 
-        for (MetricDefinition metricDefinition : metricDefinitions) {
-            ObjectNode metricNode = mapper.createObjectNode();
-            metricNode.put("name", metricDefinition.getName());
+            var lexer = new Java20Lexer(CharStreams.fromPath(path));
+            var tokens = new CommonTokenStream(lexer);
+            var parser = new Java20Parser(tokens);
+            ParseTree tree = parser.compilationUnit();
 
-            Constructor<? extends MetricEvaluator> constructor = metricDefinition.getType().getEvaluatorClass().getDeclaredConstructor();
+            ObjectNode pathNode = mapper.createObjectNode();
+            pathNode.put("filename", path.toFile().getName());
+            ArrayNode metricsNode = pathNode.putArray("metric_values");
+            for (MetricDefinition metricDefinition : metricDefinitions) {
+                ObjectNode metricNode = mapper.createObjectNode();
+                metricNode.put("name", metricDefinition.getName());
 
-            MetricEvaluator evaluator = constructor.newInstance();
+                Constructor<? extends MetricEvaluator> constructor =
+                        metricDefinition.getType().getEvaluatorClass().getDeclaredConstructor();
 
-            EvaluateParams params = new EvaluateParams(tree, metricDefinition.getConfig(), metricNode);
-            evaluator.evaluate(params);
+                MetricEvaluator evaluator = constructor.newInstance();
 
-            rootNode.add(metricNode);
+                EvaluateParams params = new EvaluateParams(tree, metricDefinition.getConfig(), metricNode);
+                evaluator.evaluate(params);
+
+                metricsNode.add(metricNode);
+            }
+            rootNode.add(pathNode);
         }
 
-
-        String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-        System.out.println(jsonString);
-
-
-
-//
-//
-//        List<MetricDefinition> metrics = new ArrayList<>();
-//
-//        NumberOfFunctionsConfiguration locConfig =
-//                new NumberOfFunctionsConfiguration(true, true, true, true);
-//        MetricDefinition metric1 = new MetricDefinition();
-//        metric1.setName("function1");
-//        metric1.setEnabled(true);
-//        metric1.setType(MetricType.NUMBER_OF_FUNCTIONS);
-//        metric1.setConfig(locConfig);
-//        metrics.add(metric1);
-//
-//
-//        try {
-//            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("config.json"), metrics);
-//            System.out.println("JSON file created: config.json");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-
-
+        System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode));
     }
+
+    private static Optional<String> readArgs(String[] args, List<Path> filesToAnalyse) {
+        Optional<String> configPath = Optional.empty();
+        Iterator<String> iterator = Arrays.stream(args).iterator();
+        while (iterator.hasNext()) {
+            String arg = iterator.next();
+            if ("-c".equals(arg)) {
+                configPath = Optional.of(iterator.next());
+            } else {
+                filesToAnalyse.add(Paths.get(arg));
+            }
+        }
+        return configPath;
+    }
+
+
 }
