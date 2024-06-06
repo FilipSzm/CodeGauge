@@ -14,6 +14,35 @@ public class CyclomaticComplexityListener extends Java20ParserBaseListener {
     private long metricValue = 0;
 
     @Override
+    public void enterMethodDeclaration(Java20Parser.MethodDeclarationContext ctx) {
+        metricValue++;
+    }
+
+    @Override
+    public void enterInstanceInitializer(Java20Parser.InstanceInitializerContext ctx) {
+        if (configuration.countInstanceInitializer())
+            metricValue++;
+    }
+
+    @Override
+    public void enterStaticInitializer(Java20Parser.StaticInitializerContext ctx) {
+        if (configuration.countStaticInitializer())
+            metricValue++;
+    }
+
+    @Override
+    public void enterConstructorDeclaration(Java20Parser.ConstructorDeclarationContext ctx) {
+        if (configuration.countConstructorDeclaration())
+            metricValue++;
+    }
+
+    @Override
+    public void enterLambdaExpression(Java20Parser.LambdaExpressionContext ctx) {
+        if (configuration.countLambdaExpression())
+            metricValue++;
+    }
+
+    @Override
     public void enterSwitchRule(Java20Parser.SwitchRuleContext ctx) {
         if (configuration.countSwitchRule())
             metricValue++;

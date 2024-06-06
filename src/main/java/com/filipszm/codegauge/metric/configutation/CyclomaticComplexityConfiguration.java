@@ -14,5 +14,10 @@ public record CyclomaticComplexityConfiguration(
         boolean countFieldAccess,
         boolean countFieldAccessPNNA,
         boolean countCatchClause,
-        boolean countAssertStatement
+        boolean countAssertStatement,
+        boolean countLambdaExpression,
+        boolean countConstructorDeclaration,
+        boolean countStaticInitializer,
+        boolean countInstanceInitializer,
+        boolean countInterfaceMethodDeclaration
 ) implements MetricConfiguration {}

@@ -37,14 +37,14 @@ compileJava {
 }
 
 application {
-    mainClass = "${project.group}.Main"
+    mainClass = "${project.group}.CodeGauge"
 }
 
 tasks.register('downloadGrammars', DefaultTask) {
     doLast {
         def urls = [
-                'https://raw.githubusercontent.com/antlr/grammars-v4/master/java/java20/Java20Lexer.g4',
-                'https://raw.githubusercontent.com/antlr/grammars-v4/master/java/java20/Java20Parser.g4'
+                'https://raw.githubusercontent.com/antlr/grammars-v4/3fd48c00f75fd1ab2e51d0100772020d9c71b3b6/java/java20/Java20Lexer.g4',
+                'https://raw.githubusercontent.com/antlr/grammars-v4/3fd48c00f75fd1ab2e51d0100772020d9c71b3b6/java/java20/Java20Parser.g4'
         ]
         def files = [
                 project.projectDir.toPath().resolve('src/main/antlr/Java20Lexer.g4'),

@@ -102,6 +102,11 @@ public final class PredefinedDefinitionsFactory {
                 false,
                 false,
                 true,
+                false,
+                false,
+                true,
+                false,
+                false,
                 false
         );
     }
