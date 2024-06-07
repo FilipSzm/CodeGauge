@@ -28,11 +28,11 @@ public class CodeGauge {
                 ConfigurationReader.readMetricDefinitions();
 
         ArrayNode rootNode = mapper.createArrayNode();
-        arguments.pathsToAnalyze().forEach(path -> analyzePath(path, metricDefinitions, rootNode));
+        arguments.filesToAnalyze().forEach(path -> analyzeFile(path, metricDefinitions, rootNode));
         printMetricValues(rootNode);
     }
 
-    private void analyzePath(Path path, List<MetricDefinition> metricDefinitions, ArrayNode rootNode) {
+    private void analyzeFile(Path path, List<MetricDefinition> metricDefinitions, ArrayNode rootNode) {
         if (!path.toFile().exists())
             return;
 

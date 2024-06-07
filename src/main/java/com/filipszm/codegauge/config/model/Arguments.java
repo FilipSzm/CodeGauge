@@ -4,4 +4,4 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
-public record Arguments(List<Path> pathsToAnalyze, Optional<String> configPath) {}
+public record Arguments(List<Path> filesToAnalyze, Optional<String> configPath) {}
