@@ -4,7 +4,7 @@
 
 ## Features
 
-- Measures code quality metrics such as complexity, duplication, and test coverage.
+- Measures code quality metrics such as complexity, lines of code, and number of functions.
 - Easy integration with existing Java projects using Gradle.
 
 ## Installation
