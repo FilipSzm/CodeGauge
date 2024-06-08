@@ -1,0 +1,71 @@
+[ {
+  "name" : "ELOC",
+  "enabled" : true,
+  "type" : "lines_of_code",
+  "config" : {
+    "countPackageDeclaration" : false,
+    "countImportDeclaration" : false,
+    "countFieldDeclaration" : false,
+    "countMethodDeclaration" : false,
+    "countClassDeclaration" : false,
+    "countInterfaceDeclaration" : false,
+    "countInstanceInitializer" : false,
+    "countStaticInitializer" : false,
+    "countConstructorDeclaration" : false,
+    "countRecordComponent" : false,
+    "countEnumConstant" : false,
+    "countFormalParameter" : false
+  }
+}, {
+  "name" : "LLOC",
+  "enabled" : true,
+  "type" : "lines_of_code",
+  "config" : {
+    "countPackageDeclaration" : true,
+    "countImportDeclaration" : true,
+    "countFieldDeclaration" : true,
+    "countMethodDeclaration" : true,
+    "countClassDeclaration" : true,
+    "countInterfaceDeclaration" : true,
+    "countInstanceInitializer" : true,
+    "countStaticInitializer" : true,
+    "countConstructorDeclaration" : true,
+    "countRecordComponent" : true,
+    "countEnumConstant" : true,
+    "countFormalParameter" : true
+  }
+}, {
+  "name" : "NUMBER_OF_FUNCTIONS",
+  "enabled" : true,
+  "type" : "number_of_functions",
+  "config" : {
+    "countLambdaExpression" : true,
+    "countConstructorDeclaration" : true,
+    "countStaticInitializer" : true,
+    "countInstanceInitializer" : true,
+    "countInterfaceMethodDeclaration" : true
+  }
+}, {
+  "name" : "CYC",
+  "enabled" : true,
+  "type" : "cyclomatic_complexity",
+  "config" : {
+    "countSwitchRule" : true,
+    "countSwitchBlockStatementGroup" : true,
+    "countConditionalExpression" : true,
+    "countConditionalOrExpression" : true,
+    "countConditionalAndExpression" : true,
+    "countCastExpression" : false,
+    "countMethodInvocation" : false,
+    "countMethodInvocationPNNA" : false,
+    "countFieldAccess" : false,
+    "countFieldAccessPNNA" : false,
+    "countCatchClause" : true,
+    "countAssertStatement" : false,
+    "countLambdaExpression" : false,
+    "countConstructorDeclaration" : true,
+    "countStaticInitializer" : false,
+    "countInstanceInitializer" : false,
+    "countInterfaceMethodDeclaration" : false
+  }
+} ]
